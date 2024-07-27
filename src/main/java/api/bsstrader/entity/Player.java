@@ -1,12 +1,14 @@
 package api.bsstrader.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Data
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
