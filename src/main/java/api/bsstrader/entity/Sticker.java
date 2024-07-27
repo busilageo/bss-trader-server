@@ -22,5 +22,6 @@ public class Sticker {
     @Enumerated(EnumType.STRING)
     private StickerType type;
 
+    @ManyToMany(mappedBy = "inventory")
     private List<Player> owners;
 }

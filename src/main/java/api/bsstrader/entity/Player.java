@@ -1,9 +1,6 @@
 package api.bsstrader.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Set;
@@ -17,6 +14,15 @@ public class Player {
 
     private Long robloxId;
     private String username;
+
+    @ManyToMany
+    @JoinTable(
+            name = "sticker_owners",
+            joinColumns = @JoinColumn(name = "player_id"),
+            inverseJoinColumns = @JoinColumn(name = "sticker_id")
+    )
     private Set<Sticker> inventory;
+
+    @OneToMany(mappedBy = "author")
     private List<Trade> trades;
 }
