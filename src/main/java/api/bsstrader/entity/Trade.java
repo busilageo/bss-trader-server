@@ -12,6 +12,7 @@ import java.util.UUID;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Trade {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,5 +30,5 @@ public class Trade {
     @Column(name = "date", nullable = false, updatable = false)
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    private final Date date;
+    private Date date;
 }
