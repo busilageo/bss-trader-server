@@ -1,5 +1,6 @@
 package api.bsstrader.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class Player {
     )
     private Set<Sticker> inventory;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Trade> trades;
 }
