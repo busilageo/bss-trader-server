@@ -1,9 +1,12 @@
 package api.bsstrader.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,4 +22,8 @@ public class Sticker {
 
     @Enumerated(EnumType.STRING)
     private StickerType type;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "inventory")
+    private List<Player> owners;
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/stickers")
@@ -31,11 +32,7 @@ public class StickerController {
     @GetMapping("/{id}")
     public ResponseEntity<Sticker> getStickerById(@PathVariable Long id) {
         Optional<Sticker> sticker = stickerService.getStickerById(id);
-        if (sticker.isPresent()) {
-            return ResponseEntity.ok(sticker.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return sticker.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Create a new sticker
@@ -61,6 +58,28 @@ public class StickerController {
     public ResponseEntity<Void> deleteSticker(@PathVariable Long id) {
         try {
             stickerService.deleteSticker(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Add an owner to a sticker
+    @PostMapping("/{stickerId}/owners/{playerId}")
+    public ResponseEntity<Void> addOwnerToSticker(@PathVariable Long stickerId, @PathVariable UUID playerId) {
+        try {
+            stickerService.addOwnerToSticker(stickerId, playerId);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Remove an owner from a sticker
+    @DeleteMapping("/{stickerId}/owners/{playerId}")
+    public ResponseEntity<Void> removeOwnerFromSticker(@PathVariable Long stickerId, @PathVariable UUID playerId) {
+        try {
+            stickerService.removeOwnerFromSticker(stickerId, playerId);
             return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
