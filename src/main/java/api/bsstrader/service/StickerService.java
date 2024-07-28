@@ -1,5 +1,6 @@
 package api.bsstrader.service;
 
+import api.bsstrader.entity.Player;
 import api.bsstrader.entity.Sticker;
 import api.bsstrader.repo.StickerRepo;
 import org.springframework.stereotype.Service;
@@ -7,13 +8,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class StickerService {
     private final StickerRepo stickerRepo;
+    private final PlayerService playerService;
 
-    public StickerService(StickerRepo stickerRepo) {
+    public StickerService(StickerRepo stickerRepo, PlayerService playerService) {
         this.stickerRepo = stickerRepo;
+        this.playerService = playerService;
     }
 
     // Get all stickers
@@ -48,6 +52,42 @@ public class StickerService {
         if (!stickerRepo.existsById(id)) {
             throw new IllegalArgumentException("Sticker with ID " + id + " does not exist.");
         }
+        // Optionally handle removing the sticker from all players' inventories before deleting
+        // This will ensure consistency and avoid orphaned references
         stickerRepo.deleteById(id);
+    }
+
+    // Add an owner to a sticker
+    @Transactional
+    public void addOwnerToSticker(Long stickerId, UUID playerId) {
+        Sticker sticker = stickerRepo.findById(stickerId)
+                .orElseThrow(() -> new IllegalArgumentException("Sticker with ID " + stickerId + " does not exist."));
+
+        Player player = playerService.getPlayerById(playerId)
+                .orElseThrow(() -> new IllegalArgumentException("Player with ID " + playerId + " does not exist."));
+
+        sticker.getOwners().add(player);
+        player.getInventory().add(sticker);
+
+        // Save changes
+        stickerRepo.save(sticker);
+        playerService.savePlayer(player); // Ensure player changes are also persisted
+    }
+
+    // Remove an owner from a sticker
+    @Transactional
+    public void removeOwnerFromSticker(Long stickerId, UUID playerId) {
+        Sticker sticker = stickerRepo.findById(stickerId)
+                .orElseThrow(() -> new IllegalArgumentException("Sticker with ID " + stickerId + " does not exist."));
+
+        Player player = playerService.getPlayerById(playerId)
+                .orElseThrow(() -> new IllegalArgumentException("Player with ID " + playerId + " does not exist."));
+
+        sticker.getOwners().remove(player);
+        player.getInventory().remove(sticker);
+
+        // Save changes
+        stickerRepo.save(sticker);
+        playerService.savePlayer(player); // Ensure player changes are also persisted
     }
 }
