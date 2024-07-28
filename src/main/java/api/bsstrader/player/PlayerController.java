@@ -1,7 +1,7 @@
-package api.bsstrader.controller;
+package api.bsstrader.player;
 
-import api.bsstrader.entity.Player;
-import api.bsstrader.service.PlayerService;
+import api.bsstrader.player.Player;
+import api.bsstrader.player.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

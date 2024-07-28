@@ -1,7 +1,7 @@
-package api.bsstrader.controller;
+package api.bsstrader.sticker;
 
-import api.bsstrader.entity.Sticker;
-import api.bsstrader.service.StickerService;
+import api.bsstrader.sticker.Sticker;
+import api.bsstrader.sticker.StickerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

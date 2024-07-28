@@ -1,6 +1,5 @@
-package api.bsstrader.repo;
+package api.bsstrader.player;
 
-import api.bsstrader.entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

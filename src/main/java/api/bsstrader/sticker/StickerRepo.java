@@ -1,6 +1,5 @@
-package api.bsstrader.repo;
+package api.bsstrader.sticker;
 
-import api.bsstrader.entity.Sticker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

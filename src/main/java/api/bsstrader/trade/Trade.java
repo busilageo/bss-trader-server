@@ -1,5 +1,6 @@
-package api.bsstrader.entity;
+package api.bsstrader.trade;
 
+import api.bsstrader.player.Player;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package api.bsstrader.entity;
+package api.bsstrader.trade;
 
 public enum TradeStatus {
     ACTIVE,

@@ -1,8 +1,7 @@
-package api.bsstrader.service;
+package api.bsstrader.sticker;
 
-import api.bsstrader.entity.Player;
-import api.bsstrader.entity.Sticker;
-import api.bsstrader.repo.StickerRepo;
+import api.bsstrader.player.Player;
+import api.bsstrader.player.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

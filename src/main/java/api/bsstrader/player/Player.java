@@ -1,5 +1,7 @@
-package api.bsstrader.entity;
+package api.bsstrader.player;
 
+import api.bsstrader.sticker.Sticker;
+import api.bsstrader.trade.Trade;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;

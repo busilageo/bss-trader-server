@@ -1,4 +1,4 @@
-package api.bsstrader.entity;
+package api.bsstrader.sticker;
 
 public enum StickerType {
     CUB_SKIN,

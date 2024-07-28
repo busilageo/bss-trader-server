@@ -1,8 +1,9 @@
 package api.bsstrader.controller;
 
-import api.bsstrader.entity.Sticker;
-import api.bsstrader.entity.StickerType;
-import api.bsstrader.service.StickerService;
+import api.bsstrader.sticker.Sticker;
+import api.bsstrader.sticker.StickerController;
+import api.bsstrader.sticker.StickerType;
+import api.bsstrader.sticker.StickerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

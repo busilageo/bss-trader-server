@@ -1,9 +1,7 @@
-package api.bsstrader.service;
+package api.bsstrader.trade;
 
-import api.bsstrader.entity.Player;
-import api.bsstrader.entity.Trade;
-import api.bsstrader.entity.TradeStatus;
-import api.bsstrader.repo.TradeRepo;
+import api.bsstrader.player.Player;
+import api.bsstrader.player.PlayerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

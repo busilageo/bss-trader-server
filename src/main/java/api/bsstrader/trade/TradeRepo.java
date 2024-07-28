@@ -1,6 +1,5 @@
-package api.bsstrader.repo;
+package api.bsstrader.trade;
 
-import api.bsstrader.entity.Trade;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
