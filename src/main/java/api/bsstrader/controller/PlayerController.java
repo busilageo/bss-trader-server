@@ -32,11 +32,7 @@ public class PlayerController {
     @GetMapping("/{id}")
     public ResponseEntity<Player> getPlayerById(@PathVariable UUID id) {
         Optional<Player> player = playerService.getPlayerById(id);
-        if (player.isPresent()) {
-            return ResponseEntity.ok(player.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return player.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Create a new player

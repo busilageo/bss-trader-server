@@ -32,11 +32,7 @@ public class StickerController {
     @GetMapping("/{id}")
     public ResponseEntity<Sticker> getStickerById(@PathVariable Long id) {
         Optional<Sticker> sticker = stickerService.getStickerById(id);
-        if (sticker.isPresent()) {
-            return ResponseEntity.ok(sticker.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return sticker.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Create a new sticker

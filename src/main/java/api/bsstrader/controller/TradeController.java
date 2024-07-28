@@ -33,11 +33,7 @@ public class TradeController {
     @GetMapping("/{id}")
     public ResponseEntity<Trade> getTradeById(@PathVariable UUID id) {
         Optional<Trade> trade = tradeService.getTradeById(id);
-        if (trade.isPresent()) {
-            return ResponseEntity.ok(trade.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return trade.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Create a new trade
