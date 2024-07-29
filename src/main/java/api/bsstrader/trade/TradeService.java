@@ -2,21 +2,24 @@ package api.bsstrader.trade;
 
 import api.bsstrader.player.Player;
 import api.bsstrader.player.PlayerService;
+import api.bsstrader.sticker.Sticker;
+import api.bsstrader.sticker.StickerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TradeService {
     private final TradeRepo tradeRepo;
     private final PlayerService playerService; // Inject PlayerService for player operations
+    private final StickerService stickerService;
 
-    public TradeService(TradeRepo tradeRepo, PlayerService playerService) {
+    public TradeService(TradeRepo tradeRepo, PlayerService playerService, StickerService stickerService) {
         this.tradeRepo = tradeRepo;
         this.playerService = playerService;
+        this.stickerService = stickerService;
     }
 
     // Get all trades
@@ -70,5 +73,44 @@ public class TradeService {
 
         trade.setStatus(newStatus);
         return tradeRepo.save(trade);
+    }
+
+    @Transactional
+    public List<TradeInstance> findTrades(UUID playerId) {
+        List<TradeInstance> tradeInstances = new ArrayList<>();
+
+
+        Player player = playerService.getPlayerById(playerId)
+                .orElseThrow(() -> new IllegalArgumentException("Player with ID " + playerId + " does not exist."));
+        // Get trades of the player
+        List<Trade> playerTrades = player.getTrades();
+        // Get all inventory stickers of the player
+        Set<Long> inventoryStickerIds = player.getInventory().stream()
+                .map(Sticker::getId)
+                .collect(Collectors.toSet());
+
+        for (Trade trade : playerTrades) {
+            Long wantedStickerId = trade.getRequestedStickerId();
+            Sticker wantedSticker = stickerService.getStickerById(wantedStickerId)
+                    .orElseThrow(() -> new IllegalArgumentException("Sticker with ID " + wantedStickerId + " does not exist."));
+
+            // Iterate over owners of the wanted sticker
+            wantedSticker.getOwners().stream()
+                    .flatMap(owner -> owner.getTrades().stream())
+                    .filter(stickerOwnerTrade -> inventoryStickerIds.contains(stickerOwnerTrade.getRequestedStickerId()))
+                    .forEach(stickerOwnerTrade -> {
+                        TradeInstance foundTrade = TradeInstance.builder()
+                                .trader(stickerOwnerTrade.getAuthor())
+                                .requestedSticker(wantedSticker)
+                                .offer(player.getInventory().stream()
+                                        .filter(sticker -> sticker.getId().equals(stickerOwnerTrade.getRequestedStickerId()))
+                                        .findFirst()
+                                        .orElse(null))
+                                .build();
+                        tradeInstances.add(foundTrade);
+                    });
+        }
+
+        return tradeInstances;
     }
 }

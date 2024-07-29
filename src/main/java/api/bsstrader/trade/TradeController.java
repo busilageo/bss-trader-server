@@ -36,6 +36,12 @@ public class TradeController {
         return trade.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}/find_trades")
+    public ResponseEntity<List<TradeInstance>> findTrades(@PathVariable UUID id) {
+        List<TradeInstance> tradeInstances = tradeService.findTrades(id);
+        return ResponseEntity.ok(tradeInstances);
+    }
+
     // Create a new trade
     @PostMapping
     public ResponseEntity<Trade> createTrade(@RequestParam UUID authorId, @RequestParam Long requestedStickerId) {
