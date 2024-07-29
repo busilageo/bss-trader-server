@@ -1,8 +1,5 @@
 package api.bsstrader.trade;
 
-import api.bsstrader.trade.Trade;
-import api.bsstrader.trade.TradeStatus;
-import api.bsstrader.trade.TradeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
